@@ -108,6 +108,9 @@ class BaseConverter:
 
     @staticmethod
     def _make_path_absolute(root: Path, path: Path) -> Path:
+        # In case path is like '~/...', we need to
+        # expand it before checking if it's absolute
+        path = path.expanduser()
         if path.is_absolute():
             return path
         root = root.resolve()
@@ -125,3 +128,4 @@ class BaseConverter:
         root = self.resolve_path or self._resolve_path or self.project_path or Path()
         root = root.resolve()
         return path.relative_to(str(root))
+
